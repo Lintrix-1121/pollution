@@ -21,6 +21,7 @@ db.sequelize_config = sequelize_config;
 
 db.data = require("./data.model")(sequelize_config, Sequelize);
 db.users = require("./user.model")(sequelize_config, Sequelize);
+db.notification = require("./notification.model")(sequelize_config, Sequelize);
 
 
 module.exports =db;

@@ -17,6 +17,8 @@ db.sequelize_config.sync(
 })
 
 require("./routes/data.routes.js")(app);
+require("./routes/user.routes.js")(app);
+require("./routes/notification.routes.js")(app);
 
 app.listen(9000, () => {
     console.log(" server on set");

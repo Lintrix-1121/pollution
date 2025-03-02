@@ -2,7 +2,7 @@ require ('dotenv').config();
 const db = require ("../models");
 const User = db.users;
 const Op = db.Sequelize.Op;
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const {where} = require("sequelize")
 
@@ -80,7 +80,7 @@ exports.Login = async (req, res) => {
         res.status(200).send({
             id: user.id,
             username: user.name,
-            message: 'Login successful'
+            message: 'Login successful' 
         });
     } catch (err) {
         res.status(500).send({
@@ -104,3 +104,47 @@ exports.Logout = (req, res) => {
         });
     }
 };
+
+
+
+
+exports.GetUsers = (req, res) => {
+    User.findAll()
+    .then(data => {
+        res.send({
+            status: "success",
+            status_code: 200,
+            message: "Users retrieved success",
+            result: data
+        });
+    })
+    .catch(err => {
+        res.send({
+            status: "Error",
+            status_code: 201,
+            message: err.message || "Failed to retrieve users"
+        });
+    });
+}
+
+
+exports.DeleteUser = (req, res) => {
+    const id = req.params.id;
+
+    User.destroy({
+        where: { id: id }
+    })
+    .then(result => {
+        if (result === 0) {
+            return res.status(404).send("User not found");
+        }
+        res.status(200).send("User deleted successfully");
+    })
+    .catch(err => {
+        res.status(500).send({
+            status: "error",
+            status_code: 500,
+            message: err.message || "Error deleting user"
+        });
+    });
+}
